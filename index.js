@@ -89,7 +89,8 @@ const peg = () => {
 };
 
 const board = (pegCount, discCount) => {
-  const winningState = false;
+  let moveCount = 0;
+  let winningState = false;
   const winningCondition = [];
   const pegs = [];
 
@@ -119,6 +120,7 @@ const board = (pegCount, discCount) => {
     
     if (potentialPeg && isPeg1Empty && hasCorrectOrder) {
       console.log('YOU HAVE WON!');
+      winningState = true;
       return;
     }
     console.log('You have not yet won.');
@@ -169,6 +171,8 @@ const board = (pegCount, discCount) => {
 
   // move a disc from one peg to another
   const move = (sourcePeg, destinationPeg) => {
+    moveCount++;
+
     const checkMoveResults = checkMove(sourcePeg, destinationPeg);
 
     if (checkMoveResults?.error) {
@@ -200,8 +204,10 @@ const board = (pegCount, discCount) => {
   }
 
   return {
+    getMoveCount: () => moveCount,
     getWinningState,
     checkWinningState,
+    getWinningState: () => winningState,
     get,
     move,
     start
@@ -211,74 +217,76 @@ const board = (pegCount, discCount) => {
 const game = () => {
   let newBoard;
   const isRunning = true;
-  let moveCount = 0;
-
-  const getMoveCount = () => {
-    return moveCount;
-  }
+  let winCount = 0;
 
   const move = (sourcePegIdx, destinationPegIdx) => {
-    moveCount++;
     newBoard.move(sourcePegIdx, destinationPegIdx);
-    console.log('Number of moves:', moveCount);
+    console.log('Number of moves:', newBoard.getMoveCount());
+
+    if (newBoard.getWinningState()) {
+      winCount++;
+    }
   }
   // var for game timer
   // var for win count
   // potentially get and set for peg and disc count?
   
   const start = (pegs, discs) => {
-    console.log('Starting a new game.')
+    console.log("\nStarting a new game. 👾\n")
     newBoard = board(pegs, discs);
     newBoard.start();
   }
 
   return {
-    getMoveCount,
+    getWinCount: () => winCount,
     move,
     start
   };
 }
 
-const game1 = game();
-
 // Example win
-// game1.start(3, 5);
-// game1.move(1,1);
-// game1.move(0,0);
-// game1.move(0,1);
-// game1.move(0,1);
-// game1.move(0,2);
-// game1.move(1,2);
-// game1.move(0,1);
-// game1.move(2,0);
-// game1.move(2,1);
-// game1.move(0,1);
-// game1.move(0,2);
-// game1.move(1,2);
-// game1.move(1,0);
-// game1.move(2,0);
-// game1.move(1,2);
-// game1.move(0,1);
-// game1.move(0,2);
-// game1.move(1,2);
-// game1.move(0,1);
-// game1.move(2,1);
-// game1.move(2,0);
-// game1.move(1,2);
-// game1.move(0,1);
-// game1.move(2,1);
-// game1.move(2,0);
-// game1.move(1,2);
-// game1.move(1,0);
-// game1.move(2,0);
-// game1.move(2,1);
-// game1.move(0,1);
-// game1.move(0,2);
-// game1.move(1,2);
-// game1.move(0,1);
-// game1.move(2,0);
-// game1.move(2,1);
-// game1.move(0,1);
+const winningGame = () => {
+  const game1 = game();
+  game1.start(3, 5);
+  game1.move(1,1);
+  game1.move(0,0);
+  game1.move(0,1);
+  game1.move(0,1);
+  game1.move(0,2);
+  game1.move(1,2);
+  game1.move(0,1);
+  game1.move(2,0);
+  game1.move(2,1);
+  game1.move(0,1);
+  game1.move(0,2);
+  game1.move(1,2);
+  game1.move(1,0);
+  game1.move(2,0);
+  game1.move(1,2);
+  game1.move(0,1);
+  game1.move(0,2);
+  game1.move(1,2);
+  game1.move(0,1);
+  game1.move(2,1);
+  game1.move(2,0);
+  game1.move(1,2);
+  game1.move(0,1);
+  game1.move(2,1);
+  game1.move(2,0);
+  game1.move(1,2);
+  game1.move(1,0);
+  game1.move(2,0);
+  game1.move(2,1);
+  game1.move(0,1);
+  game1.move(0,2);
+  game1.move(1,2);
+  game1.move(0,1);
+  game1.move(2,0);
+  game1.move(2,1);
+  game1.move(0,1);
+  console.log('Number of wins:', game1.getWinCount());
+}
+winningGame();
 
 // Potential option for running in the Node REPL
 // import repl from 'node:repl';
