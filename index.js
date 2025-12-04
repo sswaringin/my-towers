@@ -1,30 +1,3 @@
-/**
- * Base config: 3 pegs and 5 discs
- * pegs
- * pegCount
- * disc
- * discCount
- * moveCount
- * winningState
- * 
- * Example board
- * {
- *   pegs: [
- *     { discs: [ { value: 5 }, { value: 4 }, { value: 3 }, { value: 2 }, { value: 1 } ] },
- *     { discs: [] },
- *     { discs: [] }
- *   ]
- * }
- * 
- * Example game
- * start
- * end
- * restart
- * hasActiveGame (boolean)
- * instance of a board?
- * need to be able to pass in a number of pegs and discs to start a board
- */
-
 const disc = (value) => {
   return { value };
 }
@@ -231,7 +204,6 @@ const game = () => {
     }
   }
   // potentially get and set for peg and disc count?
-  // If the game is over because of a winning condition or exiting, how does that work?
   
   const start = (pegs, discs) => {
     gameStart = new Date();
@@ -305,27 +277,10 @@ const winningGame = () => {
   game1.move(2,1);
   game1.move(0,1);
 }
-winningGame();
 
 // game loop
+// If the game is over because of a winning condition or exiting, how does that work?
 // If !game.isRunning(), return;
 // if game1.getWinCount() totalWins++;
-
-// Potential option for running in the Node REPL
-// import repl from 'node:repl';
-
-// function byThePowerOfTwo(number) {
-//   return number * number;
-// }
-
-// function myEval(code, context, replResourceName, callback) {
-//   if (isNaN(code)) {
-//     callback(new Error(`${code.trim()} is not a number`));
-//   } else {
-//     callback(null, byThePowerOfTwo(code));
-//   }
-// }
-
-// repl.start({ prompt: 'Enter a number: ', eval: myEval });
 
 export { totalWins, game }
