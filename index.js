@@ -235,8 +235,6 @@ const game = () => {
   };
 }
 
-let totalWins = 0;
-
 // Example win
 const winningGame = () => {
   const game1 = game();
@@ -278,9 +276,4 @@ const winningGame = () => {
   game1.move(0,1);
 }
 
-// game loop
-// If the game is over because of a winning condition or exiting, how does that work?
-// If !game.isRunning(), return;
-// if game1.getWinCount() totalWins++;
-
-export { totalWins, game }
+export { game }
