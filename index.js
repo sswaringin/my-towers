@@ -196,6 +196,7 @@ const game = () => {
     if (results?.winningState) {
       isRunning = false;
       gameStop = new Date();
+      results.message = "Congratulations! You won!";
     }
 
     return {
