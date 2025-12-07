@@ -162,7 +162,7 @@ const board = (pegCount, discCount) => {
     }
 
     return {
-      message: "Starting a new game. 👾",
+      message: "Make a move.",
       board: get(),
       moveCount,
       winningState: checkWinningState(),
@@ -171,6 +171,7 @@ const board = (pegCount, discCount) => {
 
   return {
     getMoveCount: () => moveCount,
+    resetMoveCount: () => moveCount = 0,
     checkWinningState,
     getWinningState: () => winningState,
     get,
@@ -181,8 +182,7 @@ const board = (pegCount, discCount) => {
 
 const game = () => {
   let newBoard;
-  let isRunning = true;
-  let winCount = 0;
+  let isRunning = false;
   let gameStart;
   let gameStop;
 
@@ -194,7 +194,6 @@ const game = () => {
     const results = newBoard.move(sourcePegIdx, destinationPegIdx);
 
     if (results?.winningState) {
-      winCount++;
       isRunning = false;
       gameStop = new Date();
     }
@@ -207,6 +206,7 @@ const game = () => {
   
   const start = (pegs, discs) => {
     gameStart = new Date();
+    isRunning = true;
     newBoard = board(pegs, discs);
     const results = newBoard.start();
 
@@ -228,8 +228,8 @@ const game = () => {
 
   return {
     end,
-    getWinCount: () => winCount,
     isRunning: () => isRunning,
+    message: "Start a new game. 👾",
     move,
     start,
   };
