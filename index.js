@@ -95,29 +95,34 @@ const board = (pegCount, discCount) => {
 
     if (!sourceDisc) {
       return {
-        error: "Nothing changed... Did you pick a peg with a disc?"
+        error: true,
+        message: "Nothing changed... Did you pick a peg with a disc?"
       }
     }
 
     if (sourcePegIdx === destPegIdx) {
       return {
-        error: "Nothing changed... You just moved the disc to the same peg..."
+        error: true,
+        message: "Nothing changed... You just moved the disc to the same peg..."
       };
     }
     
     if(sourcePeg.discs.length === 0) {
       return {
-        error: "Sorry. You can't move a disc that doesn't exist."
+        error: true,
+        message: "Sorry. You can't move a disc that doesn't exist."
       }
     }
 
     if (sourceDisc?.value > destDisc?.value) {
       return {
-        error: "Sorry. You can't move a larger disc on top of a smaller disc."
+        error: true,
+        message: "Sorry. You can't move a larger disc on top of a smaller disc."
       }
     }
 
     return {
+      error: false,
       message: `Moving disc from ${sourcePegIdx + 1} to ${destPegIdx + 1}`
     }
   }
@@ -130,7 +135,7 @@ const board = (pegCount, discCount) => {
 
     if (checkMoveResults?.error) {
       return {
-        message: checkMoveResults.error,
+        message: checkMoveResults.message,
         board: get(),
         moveCount,
         winningState: checkWinningState()
@@ -181,14 +186,21 @@ const board = (pegCount, discCount) => {
 };
 
 const game = () => {
-  let newBoard;
+  let pegs = 3;
+  let discs = 5;
+  let newBoard = board(pegs, discs);
   let isRunning = false;
   let gameStart;
   let gameStop;
 
   const move = (sourcePegIdx, destinationPegIdx) => {
     if (!isRunning) {
-      return { message: 'No more moves. The game is over!'}; // future prompt to start new game
+      return {
+        board: newBoard.get(),
+        message: "You can't move unless the game is started.",
+        moveCount: newBoard.getMoveCount(),
+        winningState: newBoard.checkWinningState(),
+      };
     }
     
     const results = newBoard.move(sourcePegIdx, destinationPegIdx);
@@ -205,7 +217,7 @@ const game = () => {
   }
   // potentially get and set for peg and disc count?
   
-  const start = (pegs, discs) => {
+  const start = () => {
     gameStart = new Date();
     isRunning = true;
     newBoard = board(pegs, discs);
@@ -217,7 +229,7 @@ const game = () => {
   }
 
   const end = () => {
-    newBoard = null;
+    newBoard = board(pegs, discs);
     isRunning = false;
     gameStop = new Date();
 
@@ -226,8 +238,8 @@ const game = () => {
       duration: {gameStop, gameStart},
     }
   }
-
   return {
+    board: newBoard.get(),
     end,
     isRunning: () => isRunning,
     message: "Start a new game. 👾",
