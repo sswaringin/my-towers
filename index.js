@@ -203,7 +203,8 @@ const game = () => {
         board: newBoard.get(),
         message: "You can't move unless the game is started.",
         moveCount: newBoard.getMoveCount(),
-        winningState: newBoard.checkWinningState(),
+        winningState: false,
+        error: true
       };
     }
     
