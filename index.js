@@ -248,6 +248,7 @@ const game = () => {
     isRunning: () => isRunning,
     message: "Start a new game. 👾",
     error: false,
+    winningState: false,
     move,
     start,
   };
